@@ -20,55 +20,13 @@
     },
     {
       "parameters": {
-        "values": {
-          "string": [],
-          "array": [
-            {
-              "name": "monitor_targets",
-              "value": [
-                {
-                  "platform": "xiaohongshu",
-                  "user_id": "填写小红书用户ID"
-                },
-                {
-                  "platform": "twitter",
-                  "user_id": "填写Twitter用户ID"
-                },
-                {
-                  "platform": "bilibili",
-                  "user_id": "填写B站用户ID"
-                }
-              ]
-            }
-          ]
-        },
-        "options": {}
-      },
-      "id": "set-monitor-targets",
-      "name": "设置监控目标",
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3,
-      "position": [450, 300]
-    },
-    {
-      "parameters": {
-        "batchSize": 1
-      },
-      "id": "split-in-batches",
-      "name": "循环处理",
-      "type": "n8n-nodes-base.splitInBatches",
-      "typeVersion": 3,
-      "position": [650, 300]
-    },
-    {
-      "parameters": {
-        "url": "=http://rsshub:1200/{{$json.platform}}/user/posted/{{$json.user_id}}"
+        "url": "http://rsshub:1200/xiaohongshu/user/5a2fd5d5b1da1465933fa71b/notes"
       },
       "id": "rss-read",
-      "name": "RSS读取",
+      "name": "RSS读取-小红书",
       "type": "n8n-nodes-base.rssRead",
       "typeVersion": 1,
-      "position": [850, 300]
+      "position": [450, 300]
     },
     {
       "parameters": {
@@ -78,20 +36,14 @@
       "name": "数据清洗",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1050, 300]
+      "position": [650, 300]
     }
   ],
   "connections": {
     "定时任务触发器": {
-      "main": [[{"node": "设置监控目标", "type": "main", "index": 0}]]
+      "main": [[{"node": "RSS读取-小红书", "type": "main", "index": 0}]]
     },
-    "设置监控目标": {
-      "main": [[{"node": "循环处理", "type": "main", "index": 0}]]
-    },
-    "循环处理": {
-      "main": [[{"node": "RSS读取", "type": "main", "index": 0}]]
-    },
-    "RSS读取": {
+    "RSS读取-小红书": {
       "main": [[{"node": "数据清洗", "type": "main", "index": 0}]]
     }
   },
